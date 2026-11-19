@@ -66,7 +66,7 @@ canvas{position:fixed;inset:0;width:100%;height:100%}
 </div>
 <div class="brand">two souls, one universe.</div><div class="tag">A LITTLE UNIVERSE MADE FOR TWO</div>
 <button id="music" style="position:absolute;z-index:7;right:16px;top:18px;border:1px solid #a85b7c88;border-radius:24px;background:#100813aa;color:#f8dce8;padding:9px 12px;font:8px Arial,sans-serif;letter-spacing:2px">♫ PLAY LOVE MELODY</button>
-<input id="songFile" type="file" accept="audio/*" style="display:none">
+
 <audio id="chosenSong" loop></audio>
 <div id="youLabel">YOU</div><div id="meLabel">ME</div>
 <div id="you"></div><div id="me"></div>
@@ -108,10 +108,11 @@ function finish(){if(complete)return;complete=true;heartProgress=.01;for(let i=0
 function check(){if(Math.hypot(P.you.x-P.me.x,P.you.y-P.me.y)<Math.min(w*.19,100))finish()}
 [[you,'you'],[me,'me']].forEach(([el,key])=>{el.addEventListener('pointerdown',e=>{if(complete)return;drag=key;el.setPointerCapture(e.pointerId);e.preventDefault()});el.addEventListener('pointermove',e=>{if(drag!==key)return;P[key]={x:e.clientX,y:e.clientY};place();addTrail(e.clientX,e.clientY);check()});el.addEventListener('pointerup',()=>drag=null);el.addEventListener('pointercancel',()=>drag=null)});
 document.getElementById('open').onclick=()=>document.getElementById('modal').classList.add('open');document.getElementById('close').onclick=()=>document.getElementById('modal').classList.remove('open');document.getElementById('modal').onclick=e=>{if(e.target.id==='modal')e.currentTarget.classList.remove('open')};
-const songFile=document.getElementById('songFile'),chosenSong=document.getElementById('chosenSong'),musicBtn=document.getElementById('music');
-let uploadedSongUrl=null,uploadedSongPlaying=false;
-musicBtn.addEventListener('click',async()=>{if(uploadedSongUrl){if(uploadedSongPlaying){chosenSong.pause();uploadedSongPlaying=false;musicBtn.textContent='♫ PLAY YOUR SONG'}else{await chosenSong.play();uploadedSongPlaying=true;musicBtn.textContent='♫ PAUSE YOUR SONG'}return}songFile.click()});
-songFile.addEventListener('change',async()=>{const file=songFile.files&&songFile.files[0];if(!file)return;if(uploadedSongUrl)URL.revokeObjectURL(uploadedSongUrl);uploadedSongUrl=URL.createObjectURL(file);chosenSong.src=uploadedSongUrl;try{await chosenSong.play();uploadedSongPlaying=true;musicBtn.textContent='♫ PAUSE YOUR SONG'}catch(e){musicBtn.textContent='♫ PLAY YOUR SONG'}});
+const chosenSong=document.getElementById('chosenSong'),musicBtn=document.getElementById('music');
+let uploadedSongPlaying=false;
+chosenSong.src='c49a7da04aee8cd9ca5536bee28a47a6_320kbps(2).mp3';
+musicBtn.addEventListener('click',async()=>{try{if(uploadedSongPlaying){chosenSong.pause();uploadedSongPlaying=false;musicBtn.textContent='♫ PLAY LOVE MELODY'}else{await chosenSong.play();uploadedSongPlaying=true;musicBtn.textContent='♫ PAUSE LOVE MELODY'}}catch(e){musicBtn.textContent='♫ TAP TO PLAY MUSIC'}});
+document.getElementById('begin').addEventListener('click',async()=>{try{await chosenSong.play();uploadedSongPlaying=true;musicBtn.textContent='♫ PAUSE LOVE MELODY'}catch(e){musicBtn.textContent='♫ PLAY LOVE MELODY'}});
 document.getElementById('begin').addEventListener('click',()=>{document.getElementById('intro').classList.add('hide');for(let i=0;i<24;i++)addTrail(w/2+(Math.random()-.5)*120,h*.5+(Math.random()-.5)*100)});
 resize();background();effects();addEventListener('resize',resize);
 </script>
